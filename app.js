@@ -1,4 +1,4 @@
-require dotenv();
+require('dotenv').config()
 const express = require("express");
 const nodemailer =require ("nodemailer");
 const request =require ("request");
