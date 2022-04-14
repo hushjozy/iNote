@@ -1,13 +1,13 @@
-
-{
-  "name": "app.js",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
   {
+    "name": "app.js",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "author": "",
+    "license": "ISC",
   "dependencies": {
     "@walletconnect/node": "^1.0.0",
     "@walletconnect/qrcode-modal": "^1.7.5",
