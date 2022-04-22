@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.7.1/web3-provider.min.js"></script>
+    <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.7.7/web3-provider.min.js"></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 <link rel="stylesheet" href="/dappstyle.css">
     <title></title>
@@ -21,9 +21,7 @@
 <script type="text/javascript">
   Moralis.initialize("qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h");
 Moralis.serverURL = ("https://fjhqwoplnapa.usemoralis.com:2053/server");
-//   function login() {
-//      var user =  Moralis.Web3.authenticate();
-// }
+
 async function authenticate(){
  try{
    user = await Moralis.Web3.authenticate({provider: 'walletconnect'});
@@ -34,7 +32,60 @@ async function authenticate(){
  }
  renderApp();
  }
+ document.getElementById("btn-login").onclick = authenticate;
+ document.getElementById("btn-logout").onclick = logOut;
+ document.getElementById("btn-get-stats").onclick = getStats;
 
+ // refresh stats
+ function getStats() {
+   const user = Moralis.User.current();
+   if (user) {
+     getUserTransactions(user);
+   }
+   getAverageGasPrices();
+ }
+
+ // HISTORICAL TRANSACTIONS
+ async function getUserTransactions(user) {
+   // create query
+   const query = new Moralis.Query("EthTransactions");
+   query.equalTo("from_address", user.get("ethAddress"));
+
+   // subscribe to query updates
+   const subscription = await query.subscribe();
+   handleNewTransaction(subscription);
+
+   // run query
+   const results = await query.find();
+   console.log("user transactions:", results);
+ }
+
+ // REAL-TIME TRANSACTIONS
+ async function handleNewTransaction(subscription) {
+   // log each new transaction
+   subscription.on("create", function (data) {
+     console.log("new transaction: ", data);
+   });
+ }
+
+ // CLOUD FUNCTION
+ async function getAverageGasPrices() {
+   const results = await Moralis.Cloud.run("getAvgGas");
+   console.log("average user gas prices:", results);
+   renderGasStats(results);
+ }
+
+ function renderGasStats(data) {
+   const container = document.getElementById("gas-stats");
+   container.innerHTML = data
+     .map(function (row, rank) {
+       return `<li>#${rank + 1}: ${Math.round(row.avgGas)} gwei</li>`;
+     })
+     .join("");
+ }
+
+ //get stats on page load
+ getStats();
 </script>
 
     </body>
