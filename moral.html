@@ -12,7 +12,7 @@
   </head>
   <body>
     <div class="">
-      <button class="button_wc" id="btn-login" onclick="login()">Connect Wallet</button>
+      <button class="button_wc" id="btn-login" onclick="authenticate()">Connect Wallet</button>
       <button class="button_logout" id="btn-logout">Logout</button>
       <button id="btn-get-stats">Refresh Stats</button>
     </div>
@@ -21,9 +21,9 @@
 <script type="text/javascript">
   Moralis.initialize("qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h");
 Moralis.serverURL = ("https://fjhqwoplnapa.usemoralis.com:2053/server");
-  function login() {
-     var user =  Moralis.Web3.authenticate();
-}
+//   function login() {
+//      var user =  Moralis.Web3.authenticate();
+// }
 async function authenticate(){
  try{
    user = await Moralis.Web3.authenticate({provider: 'walletconnect'});
