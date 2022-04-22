@@ -7,14 +7,17 @@ const path = require('path');
 // const ethercon = require("ethercon")
 
 const app= express();
-const port = 3000
+const port = 3000;
+/* import moralis */
 
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/moral.html'));
   });
-
+  app.get('/moralty', (req, res) => {
+    res.sendFile(path.join(__dirname, '/walletcon.html'));
+    });
 app.post("/",(req,res) =>{
 
 })
