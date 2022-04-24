@@ -15,6 +15,7 @@
       <button class="button_wc" id="btn-login" onclick="authenticate()">Connect Wallet</button>
       <button class="button_logout" id="btn-logout">Logout</button>
       <button id="btn-get-stats">Refresh Stats</button>
+    <ul id="gas-stats"></ul>
     </div>
 
 
@@ -23,14 +24,27 @@
 Moralis.serverURL = ("https://fjhqwoplnapa.usemoralis.com:2053/server");
 
 async function authenticate(){
+  const provider ='walletconnect';
  try{
-   user = await Moralis.Web3.authenticate({provider: 'walletconnect'});
-   web3 = await Moralis.Web3.enable({provider: 'walletconnect'});
+   if (provider == 'walletconnect'){
+    const user = await Moralis.authenticate({provider: 'provider'});
+      web3 = await Moralis.enable({provider: 'provider'});
+   }else{
+     const user = await Moralis.authenticate();
+      web3 = await Moralis.enable();
+   }
+
  }catch(error){
    console.log("There is an error in Verification", error);
 
+ }{
+   console.log(user);
+    renderApp();
+ };
  }
- renderApp();
+ async function logOut() {
+   await Moralis.User.logOut();
+   console.log("logged out");
  }
  document.getElementById("btn-login").onclick = authenticate;
  document.getElementById("btn-logout").onclick = logOut;

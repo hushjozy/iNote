@@ -13,6 +13,9 @@ const port = 3000;
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/workingmoral.html'));
+  });
+app.get('/the', (req, res) => {
   res.sendFile(path.join(__dirname, '/moral.html'));
   });
   app.get('/moralty', (req, res) => {
