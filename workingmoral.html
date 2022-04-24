@@ -20,8 +20,10 @@
 
 
 <script type="text/javascript">
-  Moralis.initialize("qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h");
-Moralis.serverURL = ("https://fjhqwoplnapa.usemoralis.com:2053/server");
+  const appId = "qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h";
+const serverUrl = "https://fjhqwoplnapa.usemoralis.com:2053/server";
+
+Moralis.start({ serverUrl, appId });
 
 var user;
 var web3 = window.web3;
