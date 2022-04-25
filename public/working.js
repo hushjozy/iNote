@@ -228,16 +228,16 @@ async function authenticate() {
 
   if (typeof web3 !== 'undefined') {
     const user = await Moralis.authenticate();
-    web3 = await Moralis.enable();
+    web3 = await Moralis.enableWeb3() ;
 
 } else if (window.ethereum) {
   const user = await Moralis.authenticate();
-  web3 = await Moralis.enable();
+  web3 = await Moralis.enableWeb3();
 
 }
 else {
   const user = await Moralis.authenticate({  provider: "walletconnect"});
-  web3 = await Moralis.enable({  provider: "walletconnect" });
+  web3 = Moralis.enableWeb3({  provider: "walletconnect" });
 }
     walletAddress = user.get('ethAddress');
     // console.log(user.get('ethAddress'));
