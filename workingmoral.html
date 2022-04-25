@@ -4,31 +4,22 @@
   <head>
 
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="/web3.min.js"></script>
     <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.6.6/web3-provider.min.js"></script>
-    <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.6.6/web3-subprovider.min.js"></script>
-    <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.6.6/ethereum-provider.min.js"></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 <link rel="stylesheet" href="/dappstyle.css">
     <title></title>
   </head>
-  <body>
+  <body style="background-color:rebeccapurple;">
     <div class="">
       <button class="button_wc" id="btn-auth" >Connect Wallet</button>
       <button class="button_logout" id="btn-logout">Logout</button>
-      <button id="btn-get-stats">Refresh Stats</button>
+      <button id="btn-get-stats" onclick="displayWallet()" >Refresh Stats</button>
     <ul id="gas-stats"></ul>
     </div>
 
 
           <section>
-
-
-            <div id="nfts_viewer" >
-
-
-
-          </div>
 
           </section>
 
@@ -39,8 +30,16 @@
 
           <section id="nft_main" class="nft_image">
             <div id="nft_viewer" >
-
+<h1>your Wallet address</h1>
+<h2 id="wallet_address" style=" color:white; font-size:2.5rem;" ></h1>
+  <h2 id="wallet_balance" style=" color:white; font-size:2.5rem;" ></h1>
           </div>
+          <div id="sbsc_amount" style=" display: inline-block !important; font-weight: 700; color: aliceblue; line-height: 15px; padding-left: 15px; padding-top:20px; text-align: center;vertical-align:middle !important; ">&nbsp;</div>
+
+          <!-- <div id="sbsc_dollar" style="float: right !important;
+          clear: both !important;">&nbsp;</div> -->
+            <!-- <a href="#">Your Logo</a> -->
+        </div>
 
           </section>
 

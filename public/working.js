@@ -38,7 +38,7 @@ let result = '';
 var walletAddress;
 // let provider;
 const provider = 'walletconnect';
-
+var  balances = 20;
 /**
  * get the cookie information
  * @param {cookie name} c_name
@@ -58,8 +58,9 @@ const provider = 'walletconnect';
 
 
 function getTokens() {
-  // walletAddress = user.get('ethAddress');
+   walletAddress = user.get('ethAddress');
   console.log(user.get('ethAddress'));
+  console.log(walletAddress);
   // resultBox.innerText = user.get('ethAddress');
 
   $.ajax({
@@ -149,8 +150,9 @@ function getTokens() {
 
 
 function getNFTs() {
-  // walletAddress = user.get('ethAddress');
+   walletAddress = user.get('ethAddress');
   console.log(user.get('ethAddress'));
+  console.log(walletAddress);
   // resultBox.innerText = user.get('ethAddress');
 
   $.ajax({
@@ -177,7 +179,7 @@ function renderApp() {
   user = Moralis.User.current();
 
   if (user) {
-    authButton.style.display = 'none';
+    authButton.style.display = 'block';
     logoutButton.style.display = 'inline-block';
     nftMain.style.display = 'block';
     nftHeader.style.display = 'block';
@@ -194,9 +196,9 @@ function renderApp() {
   } else {
     authButton.style.display = 'inline-block';
     // callButton.style.display = 'none';
-    logoutButton.style.display = 'none';
-    nftMain.style.display = 'none';
-    nftHeader.style.display = 'none';
+    logoutButton.style.display = 'block';
+    nftMain.style.display = 'block';
+    nftHeader.style.display = 'block';
     // subheader.innerText = '';
     // enableButton.style.display = 'none';
   }
@@ -244,6 +246,7 @@ else {
     // await Moralis.User.logOut();
   }
   renderApp();
+
 }
 
 // window.addEventListener('load', function() {
@@ -266,12 +269,13 @@ async function logout() {
   } catch (error) {
     console.log('logOut failed', error);
   }
-  result = '';
-  sbscAmount.innerHTML = "";
-  nftMain.innerHTML = "";
-  nftHeader.innerHTML = "";
+  result = 'Please Login';
+  sbscAmount.innerHTML = "Please Login";
+  nftMain.innerHTML = "Please Login";
+  nftHeader.innerHTML = "Please Login";
   window.location.reload(true);
   renderApp();
+  console.log("user Logged out");
 }
 
 async function testCall() {
@@ -319,3 +323,18 @@ logoutButton.onclick = logout;
 // chkAsset.onclick = getTokens;
 
 renderApp();
+
+async function displayWallet(){
+  const options={
+    chain: "eth",
+   address: walletAddress,
+ };
+
+balances = await Moralis.Web3API.account.getTokenBalances(options);
+  const showWallet = document.getElementById("wallet_address");
+  const showBalance = document.getElementById("wallet_balance");
+  showWallet.style.display = 'block';
+  showWallet.innerHTML=walletAddress;
+  console.log(balances);
+  showBalance.innerHTML=balances;
+}
