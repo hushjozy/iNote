@@ -17,11 +17,7 @@ const nftMain = document.getElementById("nft_main");
 const nftHeader = document.getElementById("nft_header");
 // const nftCaption = document.getElementById("nft_text");
 
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-      window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
-  }
-});
+
 
 
 
