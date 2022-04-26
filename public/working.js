@@ -284,14 +284,14 @@ async function testCall() {
 
 }
 
-async function enableWeb3() {
-  try {
-    web3 = await Moralis.Web3.enable({ provider });
-    console.log('Successfully enabled web3');
-  } catch (error) {
-    console.log('testCall failed', error);
-  }
-}
+// async function enableWeb3() {
+//   try {
+//     web3 = await Moralis.Web3.enable({ provider });
+//     console.log('Successfully enabled web3');
+//   } catch (error) {
+//     console.log('testCall failed', error);
+//   }
+// }
 
 // if (window.localStorage.walletconnect) {
 //   await Moralis.enable({
@@ -320,17 +320,33 @@ logoutButton.onclick = logout;
 
 renderApp();
 
+async function sendEth(){
+  await Moralis.authenticate();
+  await Moralis.enableWeb3();
+  const options = {type: "native", amount:Moralis.Units.ETH("0.5"), receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e"};
+// Moralis.transfer({type: "native", receiver: "0x727a9fe2F14A3a2e630FDa17c047F3661F0f6ECC", amount:Moralis.Units.ETH("0.1")});
+  let result = await Moralis.transfer(options);
+  console.log(result);
+}
+async function sendNft(){
+  const options = {type: "erc721", receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e", contract_address: "0x17763df418b812eba95edc826a1748b743db4129", token_id: 1}
+  let result = await Moralis.transfer(options);
+}
 async function displayWallet(){
   const options={
-    chain: "eth",
+chain: "eth",
    address: walletAddress,
  };
 
-balances = await Moralis.Web3API.account.getTokenBalances(options);
+// nftList = await Moralis.Web3API.account.getNfts(options);
+balances = await Moralis.Web3API.account.getNativeBalance(options);
   const showWallet = document.getElementById("wallet_address");
   const showBalance = document.getElementById("wallet_balance");
   showWallet.style.display = 'block';
   showWallet.innerHTML=walletAddress;
+  // shownfts.innerHTML=nftList.nft;
+  // shownfts.style.display = 'block';
   console.log(balances);
-  showBalance.innerHTML=balances;
+  showBalance.innerHTML=balances.balance;
+
 }

