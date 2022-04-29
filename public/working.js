@@ -200,8 +200,8 @@ async function authenticate() {
 
 }
 else {
-  const user = await Moralis.authenticate({  provider: "walletconnect"});
-  web3 = Moralis.enableWeb3({  provider: "walletconnect" });
+  const user = await Moralis.authenticate();
+  web3 = Moralis.enableWeb3();
 }
     walletAddress = user.get('ethAddress');
   } catch (error) {
