@@ -1,5 +1,5 @@
-const serverUrl = "https://jgzl7fgbpvru.usemoralis.com:2053/server"; //Server url from moralis.io
-const appId = "msNJtQ5f0OP3jJNYzw7aQVnSGdNkraDNd0nZxZol"; // Application id from moralis.io
+const serverUrl = "https://rzltvyk6rdfx.usemoralis.com:2053/server"; //Server url from moralis.io
+const appId = "ny4QfQmX2J35NlNO8J0zuIZQn0PGnihYsMPnX6fs"; // Application id from moralis.io
 Moralis.start({ serverUrl, appId });
 
 const authButton = document.getElementById('btn-auth');
