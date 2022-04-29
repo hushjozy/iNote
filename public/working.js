@@ -1,5 +1,5 @@
-const serverUrl = "https://rzltvyk6rdfx.usemoralis.com:2053/server"; //Server url from moralis.io
-const appId = "ny4QfQmX2J35NlNO8J0zuIZQn0PGnihYsMPnX6fs"; // Application id from moralis.io
+const serverUrl = "https://fjhqwoplnapa.usemoralis.com:2053/server"; //Server url from moralis.io
+const appId = "qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h"; // Application id from moralis.io
 Moralis.start({ serverUrl, appId });
 
 const authButton = document.getElementById('btn-auth');
@@ -23,7 +23,7 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-var user="unset yet";
+var user;
 var web3 = window.web3;
 var ethAvail = window.ethereum;
 //let web3;
@@ -48,8 +48,16 @@ var  balances = 20;
   }
   return "";
 }
-
-
+async function getTokenBalance() {
+  const options = {chain: "eth", address: "0x8c685c44facb8bf246fcb0e383cca4bd46634bf8"};
+  const ethBalances = await Moralis.Web3.getAllERC20(options);
+  console.log(ethBalances)
+}
+async function getWalletNfts() {
+  const options = {chain: "eth", address: "0x8c685c44facb8bf246fcb0e383cca4bd46634bf8"};
+  const nftWalletNum = await Moralis.Web3.getNFTs(options);
+  console.log(nftWalletNum)
+}
 function getTokens() {
    walletAddress = user.get('ethAddress');
   console.log(user.get('ethAddress'));
@@ -207,6 +215,7 @@ else {
   } catch (error) {
     console.log('authenticate failed', error);
   }
+  getTokenBalance();
   renderApp();
 
 }
@@ -224,7 +233,9 @@ else {
 //   }
 
 // });
-
+getWalletNfts();
+getTokenBalance();
+displayWallet();
 async function logout() {
   try {
     await Moralis.User.logOut();
@@ -287,9 +298,9 @@ logoutButton.onclick = logout;
 renderApp();
 
 async function sendEth(){
-  await Moralis.authenticate();
-  await Moralis.enableWeb3();
-  const options = {type: "native", amount:Moralis.Units.ETH("0.5"), receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e"};
+  await Moralis.authenticate({  provider: "walletconnect"});
+  await Moralis.enableWeb3({  provider: "walletconnect"});
+  const options = {type: "native", amount:Moralis.Units.ETH("0.01"), receiver: "0x4bd12e3cf4aa5c1596452686369bf535c0a0f40e"};
 // Moralis.transfer({type: "native", receiver: "0x727a9fe2F14A3a2e630FDa17c047F3661F0f6ECC", amount:Moralis.Units.ETH("0.1")});
   let result = await Moralis.transfer(options);
   console.log(result);
