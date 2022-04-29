@@ -1,5 +1,5 @@
-const serverUrl = "https://fjhqwoplnapa.usemoralis.com:2053/server"; //Server url from moralis.io
-const appId = "qzmwR7GsUDMGwahH6Z13MXUCZvi0D0Dw9lrvJG2h"; // Application id from moralis.io
+const serverUrl = "https://jgzl7fgbpvru.usemoralis.com:2053/server"; //Server url from moralis.io
+const appId = "msNJtQ5f0OP3jJNYzw7aQVnSGdNkraDNd0nZxZol"; // Application id from moralis.io
 Moralis.start({ serverUrl, appId });
 
 const authButton = document.getElementById('btn-auth');
@@ -15,18 +15,15 @@ const sbscAmountDollar = document.getElementById("sbsc_dollar");
 const nftViewer = document.getElementById("nft_viewer");
 const nftMain = document.getElementById("nft_main");
 const nftHeader = document.getElementById("nft_header");
-// const nftCaption = document.getElementById("nft_text");
 
 
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+      window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
+  }
+});
 
-
-
-// nftViewer.insertRule('width:40%;', nftViewer.cssRules.length);
-
-
-
-
-var user;
+var user="unset yet";
 var web3 = window.web3;
 var ethAvail = window.ethereum;
 //let web3;
@@ -75,16 +72,7 @@ function getTokens() {
       console.log(result["satoshi_URLs"]);
       var URLs = result["satoshi_URLs"];
       console.log(URLs);
-      // nftViewer.style.display = "inline";
-      // nftViewer.style.justifyContent = "center";
-      // nftViewer.style.textAlign = "center";
 
-
-      // nftViewer.style.width = "5%";
-
-      // nftCaption.style.justifyContent = "center";
-      // nftCaption.style.textAlign = "center";
-      // nftCaption.style.display = "inline";
 
       if (URLs.length > 0) {
         //  block of code to be executed if the condition is true
@@ -121,8 +109,6 @@ function getTokens() {
           z.style.color = "white";
           z.style.fontSize = "0.8em";
           z.style.fontWeight = "500";
-          //z.style.verticalAlign = "bottom";
-          //var content = document.createTextNode("<YOUR_CONTENT>");
           inner_div.appendChild(z);
 
           nftViewer.appendChild(inner_div);
@@ -147,9 +133,7 @@ function getTokens() {
 
 function getNFTs() {
    walletAddress = user.get('ethAddress');
-  console.log(user.get('ethAddress'));
   console.log(walletAddress);
-  // resultBox.innerText = user.get('ethAddress');
 
   $.ajax({
     url:"/dapps/nfts/",
@@ -206,22 +190,6 @@ function renderApp() {
 
 async function authenticate() {
   try {
-  //   user = await Moralis.Web3.authenticate({
-  //     provider: "walletconnect"} );
-  //   web3 = await Moralis.Web3.enable({
-  //     provider: "walletconnect",
-
-  //     // mobileLinks: [
-  //     //   "rainbow",
-  //     //   "metamask",
-  //     //   "argent",
-  //     //   "trust",
-  //     //   "imtoken",
-  //     //   "pillar",
-  //     // ]
-  // });
-  // console.log(typeof web3);
-
   if (typeof web3 !== 'undefined') {
     const user = await Moralis.authenticate();
     web3 = await Moralis.enableWeb3() ;
@@ -236,10 +204,8 @@ else {
   web3 = Moralis.enableWeb3({  provider: "walletconnect" });
 }
     walletAddress = user.get('ethAddress');
-    // console.log(user.get('ethAddress'));
   } catch (error) {
     console.log('authenticate failed', error);
-    // await Moralis.User.logOut();
   }
   renderApp();
 
@@ -265,7 +231,7 @@ async function logout() {
   } catch (error) {
     console.log('logOut failed', error);
   }
-  result = 'Please Login';
+  result = '';
   sbscAmount.innerHTML = "Please Login";
   nftMain.innerHTML = "Please Login";
   nftHeader.innerHTML = "Please Login";
@@ -276,7 +242,7 @@ async function logout() {
 
 async function testCall() {
   try {
-    result = await web3.eth.personal.sign('Hello world', user.get('ethAddress'));
+    result = await web3.eth.personal.sign('This is my sign Test', user.get('ethAddress'));
   } catch (error) {
     console.log('testCall failed', error);
   }
