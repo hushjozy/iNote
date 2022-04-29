@@ -191,12 +191,12 @@ function renderApp() {
 async function authenticate() {
   try {
   if (typeof web3 !== 'undefined') {
-    const user = await Moralis.authenticate({  provider: "walletconnect"});
-    web3 = await Moralis.enableWeb3({  provider: "walletconnect"}) ;
+    const user = await Moralis.authenticate();
+    web3 = await Moralis.enableWeb3() ;
 
 } else if (window.ethereum) {
-  const user = await Moralis.authenticate({  provider: "walletconnect"});
-  web3 = await Moralis.enableWeb3({  provider: "walletconnect"});
+  const user = await Moralis.authenticate();
+  web3 = await Moralis.enableWeb3();
 
 }
 else {
